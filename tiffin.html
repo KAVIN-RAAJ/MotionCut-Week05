@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffin Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Tiffin Service</h1>
+    </header>
+    
+    <main>
+        <!-- Login Section -->
+        <section id="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="text" id="name" placeholder="Enter your name" required>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        
+        <!-- Menu Section -->
+        <section id="menu" class="hidden">
+            <h2>Menu</h2>
+            <div class="dish">
+                <h3>Dosa</h3>
+                <p>Price: ₹50</p>
+                <input type="number" id="dosaQty" min="1" value="1">
+                <button onclick="addToCart('Dosa', 50, 'dosaQty')">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <h3>Idli</h3>
+                <p>Price: ₹15</p>
+                <input type="number" id="idliQty" min="1" value="1">
+                <button onclick="addToCart('Idli', 15, 'idliQty')">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <h3>Pongal</h3>
+                <p>Price: ₹30</p>
+                <input type="number" id="pongalQty" min="1" value="1">
+                <button onclick="addToCart('Pongal', 30, 'pongalQty')">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <h3>Poori</h3>
+                <p>Price: ₹55</p>
+                <input type="number" id="pooriQty" min="1" value="1">
+                <button onclick="addToCart('Poori', 55, 'pooriQty')">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <h3>Tea</h3>
+                <p>Price: ₹20</p>
+                <input type="number" id="teaQty" min="1" value="1">
+                <button onclick="addToCart('Tea', 20, 'teaQty')">Add to Cart</button>
+            </div>
+            <div class="dish">
+                <h3>Coffee</h3>
+                <p>Price: ₹25</p>
+                <input type="number" id="coffeeQty" min="1" value="1">
+                <button onclick="addToCart('Coffee', 25, 'coffeeQty')">Add to Cart</button>
+            </div>
+            <section id="cart">
+                <h2>Cart</h2>
+                <div id="cartItems"></div>
+                <button onclick="proceedToDelivery()">Proceed to Delivery</button>
+            </section>
+        </section>
+
+        <!-- Delivery Section -->
+        <section id="delivery" class="hidden">
+            <h2>Enter Delivery Address</h2>
+            <input type="text" id="address" placeholder="Enter your address" required>
+            <button onclick="confirmDelivery()">Deliver</button>
+        </section>
+
+        <!-- Feedback Section -->
+        <section id="feedback" class="hidden">
+            <h2>Feedback</h2>
+            <form id="feedbackForm">
+                <label for="deliverySpeed">Speed of delivery:</label>
+                <input type="number" id="deliverySpeed" name="deliverySpeed" min="1" max="5" required>
+                
+                <label for="taste">Taste:</label>
+                <input type="number" id="taste" name="taste" min="1" max="5" required>
+                
+                <label for="service">Service:</label>
+                <input type="number" id="service" name="service" min="1" max="5" required>
+                
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Tiffin Service. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('login').classList.add('hidden');
+            document.getElementById('menu').classList.remove('hidden');
+        });
+
+        let cart = [];
+
+        function addToCart(dishName, price, qtyId) {
+            const quantity = document.getElementById(qtyId).value;
+            const item = { dishName, price, quantity: parseInt(quantity) };
+            cart.push(item);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            cart.forEach((item) => {
+                const div = document.createElement('div');
+                div.innerHTML = `${item.quantity} x ${item.dishName} @ ₹${item.price} each`;
+                cartItems.appendChild(div);
+            });
+        }
+
+        function proceedToDelivery() {
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('delivery').classList.remove('hidden');
+        }
+
+        function confirmDelivery() {
+            const address = document.getElementById('address').value;
+            if (!address) {
+                alert('Please enter your address');
+                return;
+            }
+            alert('Order placed successfully!');
+            document.getElementById('delivery').classList.add('hidden');
+            document.getElementById('feedback').classList.remove('hidden');
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback!');
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('login').classList.remove('hidden');
+            cart = [];
+        });
+    </script>
+</body>
+</html>
